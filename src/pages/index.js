@@ -36,12 +36,12 @@ const Header = () => {
         </nav>
       </div>
     </header>
-  )
-}
+  );
+};
 
 const Footer = () => {
   // get current year
-  const year = new Date().getFullYear()
+  const year = new Date().getFullYear();
 
   return (
     <footer className='position-sm-absolute start-0 end-0 bottom-0'>
@@ -69,8 +69,8 @@ const Footer = () => {
         </div>
       </div>
     </footer>
-  )
-}
+  );
+};
 
 const CountDown = () => {
   const calculateTimeLeft = () => {
@@ -82,7 +82,7 @@ const CountDown = () => {
         days: Math.floor(difference / (1000 * 60 * 60 * 24)),
         hours: Math.floor((difference / (1000 * 60 * 60)) % 24),
         minutes: Math.floor((difference / 1000 / 60) % 60),
-        seconds: Math.floor((difference / 1000) % 60)
+        seconds: Math.floor((difference / 1000) % 60),
       };
     }
 
@@ -126,8 +126,38 @@ const CountDown = () => {
 };
 
 const Home = () => {
+  const [bgIndex, setBgIndex] = useState(0);
+  const backgrounds = [
+    '/bg1.jpg',
+    '/bg2.jpg',
+    '/bg3.jpg',
+    // Add more images as needed
+  ];
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setBgIndex((prevIndex) => (prevIndex + 1) % backgrounds.length);
+    }, 3000);
+
+    return () => clearInterval(interval);
+  }, [backgrounds.length]);
+
   return (
     <>
+      <div
+        style={{
+          backgroundImage: `url(${backgrounds[bgIndex]})`,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          height: '100vh',
+          width: '100%',
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          zIndex: -1,
+          opacity: 0.3, 
+        }}
+      />
       <Header />
       <main id='content' role='main'>
         {/* Content */}
@@ -141,6 +171,9 @@ const Home = () => {
                   width={500}
                   height={500}
                   alt='SVG Illustration'
+                  style={{
+                    filter: 'drop-shadow(0 0 5px white)', // Adding a white outline
+                  }}
                 />
               </div>
               {/* End Col */}
@@ -152,10 +185,9 @@ const Home = () => {
         </div>
         {/* End Content */}
       </main>
-
       <Footer />
     </>
-  )
-}
+  );
+};
 
 export default Home;
